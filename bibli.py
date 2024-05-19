@@ -61,7 +61,7 @@ def agregar_fila(window, table, refresh_table):
             try:
                 agregar_libro(nombre, autor, año, cantidad, tipo)
                 messagebox.showinfo("Éxito", "Libro agregado exitosamente.")
-                refresh_table()  # Call the refresh_table function passed as an argument
+                refresh_table()  
                 agregar_ventana.destroy()
             except sqlite3.Error as e:
                 messagebox.showerror("Error", f"Error al agregar el libro: {str(e)}")
@@ -127,7 +127,7 @@ def editar_fila(window, values, refresh_table):
             try:
                 editar_libro(id, nombre, autor, año, cantidad, tipo)
                 messagebox.showinfo("Éxito", "Libro editado exitosamente.")
-                refresh_table()  # Call the refresh_table function passed from create_biblioteca_admin_window
+                refresh_table() 
                 editar_ventana.destroy()
             except sqlite3.Error as e:
                 messagebox.showerror("Error", f"Error al editar el libro: {str(e)}")
@@ -151,7 +151,7 @@ def eliminar_fila(table, refresh_table):
             eliminar_libro(id)
             table.delete(item)
             messagebox.showinfo("Éxito", "Libro eliminado exitosamente.")
-            refresh_table()  # Call the refresh_table function passed from create_biblioteca_admin_window
+            refresh_table()
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"Error al eliminar el libro: {str(e)}")
 
@@ -209,10 +209,9 @@ def busqueda(window, table, search_entry):
     if search_term:
         for child in table.get_children():
             values = table.item(child, "values")
-            if search_term in values[1].lower():  # Assuming the title is in the second column (index 1)
+            if search_term in values[1].lower(): 
                 filtered_data.append(values)
     else:
-        # If the search entry is empty, display the original data
         filtered_data = obtener_libros()
 
     table.delete(*table.get_children())

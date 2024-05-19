@@ -131,7 +131,7 @@ class LoginAdmin(Tk):
         if user:
             self.destroy()
             print("Acceso a Admin Logrado con Exito")
-            # TODO: Open the admin's main window or perform necessary actions
+            # TODO: Abrir la ventana de admin
         else:
             messagebox.showinfo(title="Error", message="Usuario, contraseña o pin de administrador incorrectos")
 

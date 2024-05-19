@@ -113,13 +113,12 @@ class LoginWindow(Tk):
         if user:
             self.destroy()
             print("Login Usuario Exitoso")
-            # TODO: Open the user's main window or perform necessary actions
+            # TODO: Abrir la ventana de usuario
         else:
             messagebox.showinfo(title="Error", message="Usuario o contraseña incorrectos")
 
     def abrir_seleccion(self):
         self.destroy()
-        print('hi')
         from seleccion import SeleccionWindow
         seleccion_window = SeleccionWindow()
         seleccion_window.mainloop()

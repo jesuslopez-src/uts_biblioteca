@@ -102,8 +102,8 @@ def agregar_prestamo_db(id, cantidad_prestamo, nombre_prestamo, autor_prestamo, 
     conn = create_connection()
     cursor = conn.cursor()
 
-    cantidad = obtener_cantidad_libro(id) - int(cantidad_prestamo)
-    cursor.execute('UPDATE libros SET cantidad = ? WHERE id = ?', (cantidad, id))
+    # cantidad = obtener_cantidad_libro(id) - int(cantidad_prestamo)
+    # cursor.execute('UPDATE libros SET cantidad = ? WHERE id = ?', (cantidad, id))
 
     fecha_prestamo = datetime.datetime.now()
     cursor.execute('INSERT INTO prestamos (nombre_prestamo, autor_prestamo, año_prestamo, cantidad_prestamo, tipo_prestamo, fecha_prestamo) VALUES (?, ?, ?, ?, ?, ?)', (nombre_prestamo, autor_prestamo, año_prestamo, cantidad_prestamo, tipo_prestamo, fecha_prestamo))
@@ -148,7 +148,6 @@ def agregar_libro(nombre, autor, año, cantidad, tipo):
     cursor.execute('INSERT INTO libros (nombre, autor, año, cantidad, tipo) VALUES (?, ?, ?, ?, ?)', (nombre, autor, año, cantidad, tipo))
     conn.commit()
     conn.close()
-
 
 def editar_libro(id, nombre, autor, año, cantidad, tipo):
     conn = create_connection()
