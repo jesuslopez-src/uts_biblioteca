@@ -4,6 +4,9 @@ from loginadm import LoginAdmin
 from login import LoginWindow
 from registro_adm import RegistroAdminWindow
 from registro_user import RegistroEstudianteWindow
+from PIL import ImageTk, Image, ImageOps
+import tkinter.constants as tconst
+from screeninfo import get_monitors
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -15,27 +18,42 @@ def relative_to_assets(path: str) -> Path:
 class SeleccionWindow(Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.geometry("1280x810")
+        self.monitors = get_monitors()
+        self.monitor_width=self.monitors[1].width
+        self.monitor_height=self.monitors[1].height
         self.configure(bg="#FFFFFF")
+        self.title("El Sistema sin Nombre")
         self.resizable(False, False)
+        self.grid_columnconfigure(0,weight=1)
+        self.grid_rowconfigure(0,weight=1)
         self.create_widgets()
 
     def create_widgets(self):
+
+        imagen_raw = Image.open(str(relative_to_assets("image_1.png")))
+        imagen = ImageOps.contain(imagen_raw,(self.monitor_width,self.monitor_height))
+        background_image = ImageTk.PhotoImage(imagen)
+        self.geometry(f"{background_image.width()}x{background_image.height()}")
+
+        print(background_image.height())
+        print(background_image.width())
+
         canvas = Canvas(
             self,
             bg="#FFFFFF",
-            height=810,
-            width=1280,
+            height=background_image.height(),
+            width=background_image.width(),
             bd=0,
             highlightthickness=0,
             relief="ridge"
         )
         canvas.place(x=0, y=0)
 
-        background_image = PhotoImage(file=relative_to_assets("image_1.png"))
-        canvas.create_image(640.0, 407.0, image=background_image)
+        canvas.create_image(0, 0, anchor="nw", image=background_image)
 
-        button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
+        button_image_1_raw = Image.open(str(relative_to_assets("button_1.png")))
+        button_image_1_new_size = ImageOps.contain(button_image_1_raw,(int(background_image.width()/7),int(background_image.height()/5)))
+        button_image_1 = ImageTk.PhotoImage(button_image_1_new_size)
         button_1 = Button(
             self,
             command=self.abrir_volver,
@@ -44,9 +62,11 @@ class SeleccionWindow(Tk):
             highlightthickness=0,
             relief="flat"
         )
-        button_1.place(x=57.0, y=36.0, width=146.0, height=36.150001525878906)
+        button_1.place(anchor="center",x=background_image.width()/5.0, y=background_image.height()*1/12.0, width=button_image_1.width(), height=button_image_1.height())
 
-        button_image_hover_1 = PhotoImage(file=relative_to_assets("button_hover_1.png"))
+        button_image_hover_1_raw = Image.open(str(relative_to_assets("button_hover_1.png")))
+        button_image_hover_1_new_size = ImageOps.contain(button_image_hover_1_raw,(int(background_image.width()/7),int(background_image.height()/5)))
+        button_image_hover_1 = ImageTk.PhotoImage(button_image_hover_1_new_size)
         button_1.bind('<Enter>', lambda e: button_1.config(image=button_image_hover_1))
         button_1.bind('<Leave>', lambda e: button_1.config(image=button_image_1))
 
