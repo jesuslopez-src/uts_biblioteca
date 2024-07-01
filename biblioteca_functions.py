@@ -1,7 +1,11 @@
 from tkinter import messagebox, ttk
 import sqlite3
 import customtkinter as ctk
-from database import agregar_libro, editar_libro, eliminar_libro, obtener_prestamos, obtener_libros, obtener_teg
+from database import agregar_libro, editar_libro, eliminar_libro, obtener_prestamos, obtener_libros, obtener_teg, eliminar_prestamo
+
+def create_connection():
+    conn = sqlite3.connect('biblioteca.db')
+    return conn
 
 def agregar_fila(window, search_entry, table):
     agregar_ventana = ctk.CTkToplevel(window)
@@ -151,13 +155,28 @@ def eliminar_fila(table):
                 messagebox.showerror("Error", f"Error al eliminar el libro: {str(e)}")
     else:
         messagebox.showwarning("Advertencia", "No has seleccionado ningún libro.")
+        
+def eliminar_prestamos(table):
+    selected_items = table.selection()
+    if selected_items:
+        item = selected_items[0]  
+        values = table.item(item, "values") 
+        prestamo_id = values[0]  
 
-def mostrar_prestamos(window, search_entry):
+        confirm = messagebox.askyesno("Confirmar", "¿Estás seguro de que deseas eliminar este prestamo?")
+        if confirm:
+            try:
+                eliminar_prestamo(prestamo_id) 
+                table.delete(item)
+                messagebox.showinfo("Éxito", "Prestamo eliminado exitosamente.")
+            except sqlite3.Error as e:
+                messagebox.showerror("Error", f"Error al eliminar el Prestamo: {str(e)}")
+    else:
+        messagebox.showwarning("Advertencia", "No has seleccionado ningún Prestamo.")
+
+def mostrar_tabla_prestamos(window, search_entry):
     try:
         data = obtener_prestamos()
-        if not data:
-            messagebox.showinfo("No hay Datos Existentes", "Actualmente no hay préstamos en la Base de Datos...")
-            return
 
         style = ttk.Style()
         style.theme_use("default")
@@ -165,8 +184,9 @@ def mostrar_prestamos(window, search_entry):
         style.configure("Treeview.Row", font=("Arial", 12))
         style.configure("Treeview", background="#FFFFFF")
 
-        table = ttk.Treeview(window, columns=['nombre_prestamo', 'autor_prestamo', 'año_prestamo', 'cantidad_prestamo', 'tipo_prestamo', 'fecha_prestamo'], show="headings")
+        table = ttk.Treeview(window, columns=['id', 'nombre_prestamo', 'autor_prestamo', 'año_prestamo', 'cantidad_prestamo', 'tipo_prestamo','fecha_prestamo'], show="headings")
 
+        table.heading('id', text='ID', anchor='w')
         table.heading('nombre_prestamo', text='NOMBRE', anchor='w')
         table.heading('autor_prestamo', text='AUTOR', anchor='w')
         table.heading('año_prestamo', text='AÑO', anchor='w')
@@ -182,10 +202,13 @@ def mostrar_prestamos(window, search_entry):
         table.tag_configure("headings", background="#333", foreground="#fff")
         table.place(x=390, y=377, width=758, height=376)
 
+
         return table
 
     except sqlite3.Error as e:
-        messagebox.showerror("Error", f"Error al obtener los préstamos: {str(e)}")
+        messagebox.showerror("Error", f"Error al obtener los prestamos: {str(e)}")
+        return table
+
 
 def mostrar_TEG(window, search_entry, table):
     try:
@@ -206,9 +229,6 @@ def mostrar_TEG(window, search_entry, table):
 def mostrar_tabla_libros(window, search_entry, table):
     try:
         data = obtener_libros()
-        if not data:
-            messagebox.showinfo("No hay Datos Existentes", "Actualmente la tabla está vacia en la Base de Datos...")
-            return
 
         style = ttk.Style()
         style.theme_use("default")

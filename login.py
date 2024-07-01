@@ -113,7 +113,10 @@ class LoginWindow(Tk):
         if user:
             self.destroy()
             print("Login Usuario Exitoso")
-            # TODO: Abrir la ventana de usuario
+            from biblioteca_est import create_biblioteca_user_window 
+
+            est_window = create_biblioteca_user_window()  
+            est_window.mainloop()
         else:
             messagebox.showinfo(title="Error", message="Usuario o contraseña incorrectos")
 

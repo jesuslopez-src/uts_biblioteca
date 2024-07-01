@@ -15,7 +15,7 @@ class InicioWindow(Tk):
         super().__init__(*args, **kwargs)
         self.geometry("1280x810")
         self.configure(bg="#FFFFFF")
-        self.resizable(False, False)
+        self.resizable(True, True)
         self.create_widgets()
 
     def create_widgets(self):

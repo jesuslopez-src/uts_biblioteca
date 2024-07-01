@@ -57,7 +57,7 @@ class RegistroAdminWindow(Tk):
         button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
         button_1 = Button(
             self,
-            command=self.abrir_seleccion,
+            command=self.admin,
             image=button_image_1,
             borderwidth=0,
             highlightthickness=0,
@@ -142,11 +142,11 @@ class RegistroAdminWindow(Tk):
 
         messagebox.showinfo("Registro Exitoso", "Admin registrado exitosamente")
 
-    def abrir_seleccion(self):
+    def admin(self):
         self.destroy()
-        from seleccion import SeleccionWindow
-        seleccion_window = SeleccionWindow()
-        seleccion_window.mainloop()
+        from biblioteca_adm import create_biblioteca_admin_window 
+        admin_window = create_biblioteca_admin_window() 
+        admin_window.mainloop()
 
 
 if __name__ == "__main__":

@@ -131,7 +131,10 @@ class LoginAdmin(Tk):
         if user:
             self.destroy()
             print("Acceso a Admin Logrado con Exito")
-            # TODO: Abrir la ventana de admin
+            from biblioteca_adm import create_biblioteca_admin_window 
+
+            admin_window = create_biblioteca_admin_window() 
+            admin_window.mainloop()
         else:
             messagebox.showinfo(title="Error", message="Usuario, contraseña o pin de administrador incorrectos")
 

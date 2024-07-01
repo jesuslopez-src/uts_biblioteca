@@ -181,6 +181,7 @@ def mostrar_tabla_libros(window, search_entry):
 
 def mostrar_tabla(window, data, column_names, table, search_entry):
     if not data:
+        # Display message and continue execution
         messagebox.showinfo("No hay Datos Existentes", "Actualmente la tabla está vacia en la Base de Datos...")
         return
 

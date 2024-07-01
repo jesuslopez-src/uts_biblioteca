@@ -57,7 +57,6 @@ def agregar_prestamo_bd(id, cantidad_prestamo, prestamo_ventana, window):
         return
 
     agregar_prestamo_db(id, cantidad_prestamo, nombre_prestamo, autor_prestamo, año_prestamo, tipo_prestamo)
-    messagebox.showinfo("Éxito", "Préstamo agregado correctamente.")
 
     mostrar_tabla(window)
     prestamo_ventana.destroy()
@@ -84,7 +83,7 @@ def mostrar_tabla(window):
 
     style = ttk.Style()
     style.theme_use("default")
-    style.configure("Treeview.Heading", font=("Arial", 12, "bold"), background="#dcdcdc")
+    style.configure("Treeview.Heading", font=("Arial", 9, "bold"), background="#dcdcdc")
     style.configure("Treeview.Row", font=("Calibri", 12))
     style.configure("Treeview", background="#dcdcdc")
 

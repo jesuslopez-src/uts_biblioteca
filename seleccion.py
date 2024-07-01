@@ -61,7 +61,7 @@ class SeleccionWindow(Tk):
         )
         button_2.place(x=116.0, y=616.0, width=205.0, height=57.0)
 
-        button_image_hover_2 = PhotoImage(file=relative_to_assets("button_hover_4.png"))
+        button_image_hover_2 = PhotoImage(file=relative_to_assets("button_hover_3.png"))
         button_2.bind('<Enter>', lambda e: button_2.config(image=button_image_hover_2))
         button_2.bind('<Leave>', lambda e: button_2.config(image=button_image_2))
 
@@ -83,32 +83,18 @@ class SeleccionWindow(Tk):
         button_image_4 = PhotoImage(file=relative_to_assets("button_4.png"))
         button_4 = Button(
             self,
-            command=self.abrir_registroadmin,
+            command=self.abrir_registro,
             image=button_image_4,
             borderwidth=0,
             highlightthickness=0,
             relief="flat"
         )
-        button_4.place(x=957.0, y=691.0, width=205.0, height=58.0)
+        button_4.place(x=116.0, y=695.0, width=205.0, height=57.0)
 
-        button_image_hover_4 = PhotoImage(file=relative_to_assets("button_hover_3.png"))
+        button_image_hover_4 = PhotoImage(file=relative_to_assets("button_hover_4.png"))
         button_4.bind('<Enter>', lambda e: button_4.config(image=button_image_hover_4))
         button_4.bind('<Leave>', lambda e: button_4.config(image=button_image_4))
 
-        button_image_5 = PhotoImage(file=relative_to_assets("button_5.png"))
-        button_5 = Button(
-            self,
-            command=self.abrir_registro,
-            image=button_image_5,
-            borderwidth=0,
-            highlightthickness=0,
-            relief="flat"
-        )
-        button_5.place(x=116.0, y=695.0, width=205.0, height=57.0)
-
-        button_image_hover_5 = PhotoImage(file=relative_to_assets("button_hover_5.png"))
-        button_5.bind('<Enter>', lambda e: button_5.config(image=button_image_hover_5))
-        button_5.bind('<Leave>', lambda e: button_5.config(image=button_image_5))
 
         image_image_2 = PhotoImage(file=relative_to_assets("image_2.png"))
         canvas.create_image(226.0, 404.0, image=image_image_2)
@@ -132,7 +118,7 @@ class SeleccionWindow(Tk):
             background_image, button_image_1, button_image_hover_1,
             button_image_2, button_image_hover_2, button_image_3,
             button_image_hover_3, button_image_4, button_image_hover_4,
-            button_image_5, button_image_hover_5, image_image_2,
+            image_image_2,
             image_image_3, image_image_4, image_image_5, image_image_6,
             image_image_7
         ]
