@@ -3,6 +3,7 @@ from tkinter import Tk, Canvas, Button
 from database import create_tables, insert_user
 from seleccion import SeleccionWindow
 from PIL import ImageTk, Image, ImageOps
+from monitors import detect_monitor
 from screeninfo import get_monitors
 
 import os
@@ -17,12 +18,16 @@ class InicioWindow(Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.monitors = get_monitors()
-        self.monitor_width=self.monitors[1].width
-        self.monitor_height=self.monitors[1].height
+        self.monitor = detect_monitor()
+        self.monitor_width=self.monitor.width
+        self.monitor_height=self.monitor.height
+        # self.monitor_width=self.monitors[0].width
+        # self.monitor_height=self.monitors[0].height
         self.configure(bg="#FFFFFF")
-        self.title("El Sistema sin Nombre")
+        self.title("El Sistema Biblioteca")
         self.resizable(False, False)
         self.create_widgets()
+        
 
     def create_widgets(self):
 
