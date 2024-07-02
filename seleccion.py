@@ -238,11 +238,11 @@ class SeleccionWindow(Tk):
         registro_user_window = RegistroEstudianteWindow()
         registro_user_window.mainloop()
 
-    def abrir_registroadmin(self):
-        self.destroy()
-        print('Registro admin')
-        registro_admin_window = RegistroAdminWindow()
-        registro_admin_window.mainloop()
+    # def abrir_registroadmin(self):
+    #     self.destroy()
+    #     print('Registro admin')
+    #     registro_admin_window = RegistroAdminWindow()
+    #     registro_admin_window.mainloop()
 
     def abrir_volver(self):
         self.destroy()
