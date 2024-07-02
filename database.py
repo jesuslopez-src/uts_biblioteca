@@ -30,7 +30,7 @@ def create_tables():
                                    fecha_prestamo TEXT
                                );"""
     c.execute(create_prestamos_table)
-    create_usuario_table = """CREATE TABLE IF NOT EXISTS usuario (
+    create_usuario_table = """CREATE TABLE IF NOT EXISTS usuarios (
                                 usu_id INTEGER PRIMARY KEY AUTOINCREMENT,
                                 usu_nom TEXT,
                                 usu_pass TEXT,
@@ -51,7 +51,7 @@ def registrar_admin(usu_nom, usu_pass, admin_pin):
     conn = create_connection()
     c = conn.cursor()
     c.execute('INSERT INTO usuario (usu_nom, usu_pass, admin_pin, rol) VALUES (?, ?, ?, ?)', (usu_nom, hashed_contraseña, hashed_pin, 'ADMIN'))
-    c.execute('SELECT MAX(usu_id) FROM usuario')
+    c.execute('SELECT MAX(usu_id) FROM usuarios')
     max_id = c.fetchone()[0]
     c.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'usuario'))
     conn.commit()
@@ -71,7 +71,7 @@ def registrar_usuario(usu_nom, usu_pass):
 def insert_user():
     conn = create_connection()
     c = conn.cursor()
-    c.execute("SELECT COUNT(*) FROM usuario WHERE usu_nom = 'admin'")
+    c.execute("SELECT COUNT(*) FROM usuarios WHERE usu_nom = 'admin'")
     count = c.fetchone()[0]
     if count == 0:
         registrar_admin("admin", "admin", "1496")

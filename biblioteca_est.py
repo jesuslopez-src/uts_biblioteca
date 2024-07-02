@@ -236,7 +236,7 @@ def create_biblioteca_user_window():
     button_4.bind('<Leave>', lambda e: button_4.config(image=button_image_4))
 
     window.resizable(False, False)
-    window.mainloop()
+    return window
 
 if __name__ == "__main__":
     create_biblioteca_user_window()
