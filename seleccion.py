@@ -2,7 +2,7 @@ from pathlib import Path
 from tkinter import Tk, Canvas, Button
 from loginadm import LoginAdmin
 from login import LoginWindow
-from registro_adm import RegistroAdminWindow
+# from registro_adm import RegistroAdminWindow
 from registro_user import RegistroEstudianteWindow
 from PIL import ImageTk, Image, ImageOps
 from monitors import detect_monitor
@@ -25,7 +25,7 @@ class SeleccionWindow(Tk):
         # self.monitor_width=self.monitors[0].width
         # self.monitor_height=self.monitors[0].height
         self.configure(bg="#FFFFFF")
-        self.title("El Sistema Biblioteca")
+        self.title("Biblioteca UTS")
         self.resizable(False, False)
         self.num_columnas = 20
         self.num_filas = 12
@@ -38,8 +38,8 @@ class SeleccionWindow(Tk):
         background_image = ImageTk.PhotoImage(imagen)
         self.geometry(f"{background_image.width()}x{background_image.height()}")
 
-        print(background_image.height())
-        print(background_image.width())
+        # print(background_image.height())
+        # print(background_image.width())
 
         canvas = Canvas(
             self,

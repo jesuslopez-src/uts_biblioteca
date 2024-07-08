@@ -24,7 +24,7 @@ class InicioWindow(Tk):
         # self.monitor_width=self.monitors[0].width
         # self.monitor_height=self.monitors[0].height
         self.configure(bg="#FFFFFF")
-        self.title("El Sistema Biblioteca")
+        self.title("Biblioteca UTS")
         self.resizable(False, False)
         self.create_widgets()
         

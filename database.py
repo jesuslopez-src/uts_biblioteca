@@ -50,10 +50,10 @@ def registrar_admin(usu_nom, usu_pass, admin_pin):
     hashed_pin = hash_password(admin_pin)
     conn = create_connection()
     c = conn.cursor()
-    c.execute('INSERT INTO usuario (usu_nom, usu_pass, admin_pin, rol) VALUES (?, ?, ?, ?)', (usu_nom, hashed_contraseña, hashed_pin, 'ADMIN'))
+    c.execute('INSERT INTO usuarios (usu_nom, usu_pass, admin_pin, rol) VALUES (?, ?, ?, ?)', (usu_nom, hashed_contraseña, hashed_pin, 'ADMIN'))
     c.execute('SELECT MAX(usu_id) FROM usuarios')
     max_id = c.fetchone()[0]
-    c.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'usuario'))
+    c.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'usuarios'))
     conn.commit()
     conn.close()
 
@@ -61,10 +61,10 @@ def registrar_usuario(usu_nom, usu_pass):
     hashed_contraseña = hash_password(usu_pass)
     conn = create_connection()
     c = conn.cursor()
-    c.execute('INSERT INTO usuario (usu_nom, usu_pass, rol) VALUES (?, ?, ?)', (usu_nom, hashed_contraseña, 'USER'))
-    c.execute('SELECT MAX(usu_id) FROM usuario')
+    c.execute('INSERT INTO usuarios (usu_nom, usu_pass, rol) VALUES (?, ?, ?)', (usu_nom, hashed_contraseña, 'USER'))
+    c.execute('SELECT MAX(usu_id) FROM usuarios')
     max_id = c.fetchone()[0]
-    c.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'usuario'))
+    c.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'usuarios'))
     conn.commit()
     conn.close()
 
@@ -83,7 +83,7 @@ def login_user(usu_nom, usu_pass):
     hashed_contraseña = hash_password(usu_pass)
     conn = create_connection()
     c = conn.cursor()
-    c.execute("SELECT * FROM usuario WHERE usu_nom = ? AND usu_pass = ?", (usu_nom, hashed_contraseña))
+    c.execute("SELECT * FROM usuarios WHERE usu_nom = ? AND usu_pass = ?", (usu_nom, hashed_contraseña))
     user = c.fetchone()
     conn.close()
     return user
@@ -93,7 +93,7 @@ def login_admin(usu_nom, usu_pass, admin_pin):
     hashed_pin = hash_password(admin_pin)
     conn = create_connection()
     c = conn.cursor()
-    c.execute("SELECT * FROM usuario WHERE usu_nom = ? AND usu_pass = ? AND admin_pin = ?",
+    c.execute("SELECT * FROM usuarios WHERE usu_nom = ? AND usu_pass = ? AND admin_pin = ?",
               (usu_nom, hashed_contraseña, hashed_pin))
     user = c.fetchone()
     conn.close()
