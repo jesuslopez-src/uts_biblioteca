@@ -3,7 +3,7 @@ from tkinter import Tk, Canvas, Button
 from loginadm import LoginAdmin
 from login import LoginWindow
 # from registro_adm import RegistroAdminWindow
-from registro_user import RegistroEstudianteWindow
+from registro_user_new import RegistroEstudianteWindow
 from PIL import ImageTk, Image, ImageOps
 from monitors import detect_monitor
 from screeninfo import get_monitors
