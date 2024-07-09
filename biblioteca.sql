@@ -43,7 +43,7 @@ id                      int unsigned auto_increment not null,
 id_usuario              int unsigned not null,
 id_libro                int unsigned not null,
 cantidad_prestamo       smallint unsigned not null,
-fecha_prestamo          date,
+fecha_prestamo          timestamp not null default CURRENT_TIMESTAMP(),
 CONSTRAINT  PRIMARY KEY(id),
 CONSTRAINT `fk_libro` FOREIGN KEY(id_libro) REFERENCES Libros (id)
 ON DELETE CASCADE ON UPDATE CASCADE,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS Prestamos_Documentos(
 id                      int unsigned auto_increment not null,
 id_usuario              int unsigned not null,
 id_docu                 int unsigned not null,
-fecha_prestamo          date,
+fecha_prestamo          timestamp not null default CURRENT_TIMESTAMP(),
 CONSTRAINT PRIMARY KEY(id),
 CONSTRAINT `fk_docu` FOREIGN KEY(id_docu) REFERENCES Documentos (id_documento)
 ON DELETE CASCADE ON UPDATE CASCADE,
