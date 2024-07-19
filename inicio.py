@@ -81,8 +81,7 @@ class InicioWindow(Tk):
         self.image_references = [background_image, button_image_1, button_image_hover_1]
 
     def abrir_seleccion(self):
-        create_tables()
         insert_user()
         self.destroy()
         seleccion_window = SeleccionWindow()  
-        seleccion_window.mainloop()  
+        seleccion_window.mainloop()

@@ -1,9 +1,8 @@
 
 from inicio import InicioWindow
-from database import create_tables
+from database import create_tables2
 
 def main():
-    create_tables()
     window = InicioWindow()
     window.mainloop()
 
