@@ -1,6 +1,6 @@
 
 from inicio import InicioWindow
-from database import create_tables2
+# from database import create_tables2
 
 def main():
     window = InicioWindow()

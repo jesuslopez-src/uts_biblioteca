@@ -1,6 +1,6 @@
 from pathlib import Path
 from tkinter import Tk, Canvas, Button
-from database import create_tables, insert_user
+from database import insert_user
 from seleccion import SeleccionWindow
 from PIL import ImageTk, Image, ImageOps
 from monitors import detect_monitor

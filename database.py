@@ -1,84 +1,90 @@
 import hashlib
-import sqlite3
 import datetime
 import pyodbc 
 from tkinter import messagebox
 
 def create_connection():
-    servidor = 'BIBLIOTECA1-ACO'  # Nombre del servidor SQL con el cual se hará la conexión
+    servidor = 'DESKTOP-78S6O5M\\SQLEXPRESS'  # Nombre del servidor SQL con el cual se hará la conexión
     bddatos = 'biblioteca'  # Nombre de la base de datos SQL
-    #usuario = 'Admin' # Nombre del usuario de SQL
+    usuario = 'dbo' # Nombre del usuario conectado a la base de datos
     #clave = ''  # Contraseña del usuario de SQL
     conn = pyodbc.connect('DRIVER={SQL server};SERVER='+servidor+';DATABASE='+bddatos)
     print('conexion exitosa')
     cursor = conn.cursor()
-    cursor.execute("SELECT TABLE_NAME FROM [Biblioteca].INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'")
+    cursor.execute(f"SELECT TABLE_NAME FROM {bddatos}.INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'")
     
     for row in cursor.fetchall():
         print (row)
     cursor.close()
+    print(conn.getinfo(pyodbc.SQL_DATABASE_NAME))
+    print(conn.getinfo(pyodbc.SQL_USER_NAME))
     return conn
 
 # def create_connection():
 #     conn = pyodbc.connect('biblioteca')
 #     return conn
 
-# def hash_password(password):
-#     return hashlib.sha256(password.encode('utf-8')).hexdigest()
+def hash_password(password):
+    return hashlib.sha256(password.encode('utf-8')).hexdigest()
 
-# def registrar_admin(usu_nom, usu_pass, admin_pin):
-#     hashed_contraseña = hash_password(usu_pass)
-#     hashed_pin = hash_password(admin_pin)
-#     conn = create_connection()
-#     c = conn.cursor()
-#     c.execute('INSERT INTO usuarios (usu_nom, usu_pass, admin_pin, rol) VALUES (?, ?, ?, ?)', (usu_nom, hashed_contraseña, hashed_pin, 'ADMIN'))
-#     c.execute('SELECT MAX(usu_id) FROM usuarios')
-#     max_id = c.fetchone()[0]
-#     c.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'usuarios'))
-#     conn.commit()
-#     conn.close()
+def registrar_admin(conn,usu_nom, usu_pass, admin_pin):
+    hashed_contraseña = hash_password(usu_pass)
+    hashed_pin = hash_password(admin_pin)
+    c = conn.cursor()
+    c.execute(f'INSERT INTO {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.[usuarios]\
+            ([usu_nom],[usu_c_identidad]) VALUES (?,?)',(usu_nom,'18205268'))
+    conn.commit()
+    c.execute(f"SELECT usu_id FROM {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.usuarios WHERE usu_c_identidad = '18205268'")
+    usu_id = c.fetchone()[0]
+    c.execute(f'INSERT INTO {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.[usuarios_sistema]\
+            ([fk_usu_id],[usu_pass],[admin_pin],[rol]) VALUES (?,?,?,?)',(usu_id,hashed_contraseña,hashed_pin,'admin'))
+    # max_id = c.fetchone()[0]
+    # c.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'usuarios'))
+    conn.commit()
 
-# def registrar_usuario(usu_nom, usu_pass):
-#     hashed_contraseña = hash_password(usu_pass)
-#     conn = create_connection()
-#     c = conn.cursor()
-#     c.execute('INSERT INTO usuarios (usu_nom, usu_pass, rol) VALUES (?, ?, ?)', (usu_nom, hashed_contraseña, 'USER'))
-#     c.execute('SELECT MAX(usu_id) FROM usuarios')
-#     max_id = c.fetchone()[0]
-#     c.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'usuarios'))
-#     conn.commit()
-#     conn.close()
+def registrar_usuario(usu_nom, usu_pass):
+    hashed_contraseña = hash_password(usu_pass)
+    conn = create_connection()
+    conn[conn]
+    conn['bd']
+    c = conn.cursor()
+    c.execute('INSERT INTO usuarios (usu_nom, usu_pass, rol) VALUES (?, ?, ?)', (usu_nom, hashed_contraseña, 'USER'))
+    c.execute('SELECT MAX(usu_id) FROM usuarios')
+    max_id = c.fetchone()[0]
+    c.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'usuarios'))
+    conn.commit()
+    conn.close()
 
-# def insert_user():
-#     conn = create_connection()
-#     c = conn.cursor()
-#     c.execute("SELECT COUNT(*) FROM usuarios WHERE usu_nom = 'admin'")
-#     count = c.fetchone()[0]
-#     if count == 0:
-#         registrar_admin("admin", "admin", "1496")
-#     else:
-#         print("Admin user already exists")
-#     conn.close()
+def insert_user():
+    conn = create_connection()
+    c = conn.cursor()
+    c.execute(f"SELECT COUNT(*) FROM {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.usuarios_sistema WHERE rol = 'admin'")
+    count = c.fetchone()[0]
+    if count == 0:
+        registrar_admin(conn,"admin", "admin", "1496")
+    else:
+        print("Admin user already exists")
+    conn.close()
 
-# def login_user(usu_nom, usu_pass):
-#     hashed_contraseña = hash_password(usu_pass)
-#     conn = create_connection()
-#     c = conn.cursor()
-#     c.execute("SELECT * FROM usuarios WHERE usu_nom = ? AND usu_pass = ?", (usu_nom, hashed_contraseña))
-#     user = c.fetchone()
-#     conn.close()
-#     return user
+def login_user(usu_nom, usu_pass):
+    hashed_contraseña = hash_password(usu_pass)
+    conn = create_connection()
+    c = conn.cursor()
+    c.execute("SELECT * FROM usuarios WHERE usu_nom = ? AND usu_pass = ?", (usu_nom, hashed_contraseña))
+    user = c.fetchone()
+    conn.close()
+    return user
 
-# def login_admin(usu_nom, usu_pass, admin_pin):
-#     hashed_contraseña = hash_password(usu_pass)
-#     hashed_pin = hash_password(admin_pin)
-#     conn = create_connection()
-#     c = conn.cursor()
-#     c.execute("SELECT * FROM usuarios WHERE usu_nom = ? AND usu_pass = ? AND admin_pin = ?",
-#               (usu_nom, hashed_contraseña, hashed_pin))
-#     user = c.fetchone()
-#     conn.close()
-#     return user
+def login_admin(usu_nom, usu_pass, admin_pin):
+    hashed_contraseña = hash_password(usu_pass)
+    hashed_pin = hash_password(admin_pin)
+    conn = create_connection()
+    c = conn.cursor()
+    c.execute("SELECT * FROM usuarios WHERE usu_nom = ? AND usu_pass = ? AND admin_pin = ?",
+              (usu_nom, hashed_contraseña, hashed_pin))
+    user = c.fetchone()
+    conn.close()
+    return user
 
 # def agregar_prestamo_db(id, cantidad_prestamo, nombre_prestamo, autor_prestamo, año_prestamo, tipo_prestamo):
 #     conn = create_connection()
@@ -215,6 +221,6 @@ def create_connection():
 
 #     return teg
 
-# if __name__ == "__main__":
-#     print(__name__)
-#     create_connection()
+if __name__ == "__main__":
+    print(__name__)
+    create_connection()
