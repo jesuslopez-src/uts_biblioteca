@@ -42,18 +42,31 @@ def registrar_admin(conn,usu_nom, usu_pass, admin_pin):
     # c.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'usuarios'))
     conn.commit()
 
-def registrar_usuario(usu_nom, usu_pass):
+def registrar_usuario(usu_nom, usu_pass,usu_cedula)->tuple:
     hashed_contraseña = hash_password(usu_pass)
     conn = create_connection()
-    conn[conn]
-    conn['bd']
     c = conn.cursor()
-    c.execute('INSERT INTO usuarios (usu_nom, usu_pass, rol) VALUES (?, ?, ?)', (usu_nom, hashed_contraseña, 'USER'))
-    c.execute('SELECT MAX(usu_id) FROM usuarios')
-    max_id = c.fetchone()[0]
-    c.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'usuarios'))
-    conn.commit()
+    #chequear si el usuario ya existe en la tabla usuarios de la base de datos 
+    c.execute(f"SELECT usu_id FROM {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.usuarios WHERE usu_c_identidad = ?",(usu_cedula))
+    usuario = c.fetchone()
+    mensaje =("Registro Exitoso", "Usuario registrado exitosamente")
+    if  usuario == None:
+        c.execute(f'INSERT INTO {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.[usuarios] (usu_nom, usu_c_identidad) VALUES (?, ?)', (usu_nom,usu_cedula))
+        c.commit()
+        c.execute(f'SELECT MAX(usu_id) FROM {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.[usuarios]')
+        usu_id = c.fetchone()[0]
+        c.execute(f'INSERT INTO {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.[usuarios_sistema] (fk_usu_id, usu_pass, admin_pin, rol) VALUES (?, ?, ?, ?)', (usu_id, hashed_contraseña,None,"user"))
+    else:
+        usu_id = usuario[0]
+        c.execute(f"SELECT fk_usu_id FROM {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.usuarios_sistema WHERE fk_usu_id = ?",(usu_id))
+        usuario = c.fetchone()
+        if  usuario == None:
+            c.execute(f'INSERT INTO {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.[usuarios_sistema] (fk_usu_id, usu_pass, admin_pin, rol) VALUES (?, ?, ?, ?)', (usu_id, hashed_contraseña,None,"user"))
+        else:
+            mensaje = ("Registro exitoso","usuario previamente registrado")
+    c.commit()
     conn.close()
+    return mensaje
 
 def insert_user():
     conn = create_connection()
@@ -70,9 +83,12 @@ def login_user(usu_nom, usu_pass):
     hashed_contraseña = hash_password(usu_pass)
     conn = create_connection()
     c = conn.cursor()
-    c.execute("SELECT * FROM usuarios WHERE usu_nom = ? AND usu_pass = ?", (usu_nom, hashed_contraseña))
+    c.execute(f"SELECT * FROM {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.usuarios_sistema\
+              INNER JOIN {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.usuarios\
+              ON ({conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.[usuarios_sistema].fk_usu_id = {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.[usuarios].usu_id) WHERE usu_nom = ? AND usu_pass = ?", (usu_nom, hashed_contraseña))
     user = c.fetchone()
     conn.close()
+    # print(user)
     return user
 
 def login_admin(usu_nom, usu_pass, admin_pin):
@@ -86,40 +102,40 @@ def login_admin(usu_nom, usu_pass, admin_pin):
     conn.close()
     return user
 
-# def agregar_prestamo_db(id, cantidad_prestamo, nombre_prestamo, autor_prestamo, año_prestamo, tipo_prestamo):
-#     conn = create_connection()
-#     cursor = conn.cursor()
+def agregar_prestamo_db(id, cantidad_prestamo, nombre_prestamo, autor_prestamo, año_prestamo, tipo_prestamo):
+    conn = create_connection()
+    cursor = conn.cursor()
 
-#     cursor.execute('SELECT nombre, autor, año, cantidad, tipo FROM libros WHERE id = ?', (id,))
-#     libro_data = cursor.fetchone()
+    cursor.execute('SELECT nombre, autor, año, cantidad, tipo FROM libros WHERE id = ?', (id,))
+    libro_data = cursor.fetchone()
 
-#         # Validar si el ID del libro existe
-#     if not libro_data:
-#             messagebox.showerror("Error", "LA ID DE LIBRO, NO HA SIDO ENCONTRADO")
-#             return
+        # Validar si el ID del libro existe
+    if not libro_data:
+            messagebox.showerror("Error", "LA ID DE LIBRO, NO HA SIDO ENCONTRADO")
+            return
 
-#     nombre_prestamo, autor_prestamo, año_prestamo, cantidad_actual_str, tipo_prestamo = libro_data
+    nombre_prestamo, autor_prestamo, año_prestamo, cantidad_actual_str, tipo_prestamo = libro_data
 
-#         # aqui convertimos la cantidad actual a entero...
-#     cantidad_actual = int(cantidad_actual_str)
+        # aqui convertimos la cantidad actual a entero...
+    cantidad_actual = int(cantidad_actual_str)
 
-#         # Validamos la cantidad prestada
-#     if int(cantidad_prestamo) > cantidad_actual:
-#             messagebox.showerror("Error", "La cantidad solicitada es mayor a la disponible.")
-#             return
+        # Validamos la cantidad prestada
+    if int(cantidad_prestamo) > cantidad_actual:
+            messagebox.showerror("Error", "La cantidad solicitada es mayor a la disponible.")
+            return
 
-#         # Actualizamos la cantidad del libro
-#     cantidad = cantidad_actual - int(cantidad_prestamo)
-#     cursor.execute('UPDATE libros SET cantidad = ? WHERE id = ?', (cantidad, id))
+        # Actualizamos la cantidad del libro
+    cantidad = cantidad_actual - int(cantidad_prestamo)
+    cursor.execute('UPDATE libros SET cantidad = ? WHERE id = ?', (cantidad, id))
 
-#         # registramos el prestamo
-#     fecha_prestamo = datetime.datetime.now()
-#     cursor.execute('INSERT INTO prestamos (nombre_prestamo, autor_prestamo, año_prestamo, cantidad_prestamo, tipo_prestamo, fecha_prestamo) VALUES (?, ?, ?, ?, ?, ?)', (nombre_prestamo, autor_prestamo, año_prestamo, cantidad_prestamo, tipo_prestamo, fecha_prestamo))
+        # registramos el prestamo
+    fecha_prestamo = datetime.datetime.now()
+    cursor.execute('INSERT INTO prestamos (nombre_prestamo, autor_prestamo, año_prestamo, cantidad_prestamo, tipo_prestamo, fecha_prestamo) VALUES (?, ?, ?, ?, ?, ?)', (nombre_prestamo, autor_prestamo, año_prestamo, cantidad_prestamo, tipo_prestamo, fecha_prestamo))
 
-#         # bueno, esperemos que se confirme la operaciom y cerramos la conexion
-#     conn.commit()
+        # bueno, esperemos que se confirme la operaciom y cerramos la conexion
+    conn.commit()
     
-#     messagebox.showinfo("Éxito", "Préstamo agregado correctamente.")
+    messagebox.showinfo("Éxito", "Préstamo agregado correctamente.")
 
 # def obtener_cantidad_libro(id):
 #     conn = create_connection()
@@ -131,25 +147,25 @@ def login_admin(usu_nom, usu_pass, admin_pin):
 
 #     return cantidad
 
-# def obtener_libros():
-#     conn = create_connection()
-#     cursor = conn.cursor()
+def obtener_libros():
+    conn = create_connection()
+    cursor = conn.cursor()
 
-#     cursor.execute("SELECT id, nombre, autor, año, cantidad, tipo FROM libros")
-#     libros = cursor.fetchall()
-#     conn.close()
+    cursor.execute("SELECT id, nombre, autor, año, cantidad, tipo FROM libros")
+    libros = cursor.fetchall()
+    conn.close()
 
-#     return libros
+    return libros
 
-# def obtener_teg():
-#     conn = create_connection()
-#     cursor = conn.cursor()
+def obtener_teg():
+    conn = create_connection()
+    cursor = conn.cursor()
 
-#     cursor.execute("SELECT nombre, autor, año, cantidad, tipo FROM libros WHERE tipo = 'T.E.G'")
-#     teg = cursor.fetchall()
-#     conn.close()
+    cursor.execute("SELECT nombre, autor, año, cantidad, tipo FROM libros WHERE tipo = 'T.E.G'")
+    teg = cursor.fetchall()
+    conn.close()
 
-#     return teg
+    return teg
 
 # def agregar_libro(nombre, autor, año, cantidad, tipo):
 #     conn = create_connection()

@@ -1,5 +1,5 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Button, PhotoImage, messagebox, constants
+from tkinter import Tk, Canvas, Entry, Button, PhotoImage, messagebox, constants,Label
 from database import login_user
 from PIL import ImageTk, Image, ImageOps
 from monitors import detect_monitor
@@ -66,10 +66,35 @@ class RegistroEstudianteWindow(Tk):
         )
         # self.entry_1.place(x=550.0, y=351.0, width=178.0, height=35.0)
         entry_1_x = background_image.width()*15/self.num_columnas
-        entry_1_y = background_image.height()*11/self.num_filas
+        entry_1_y = background_image.height()*10/self.num_filas
         canvas.create_image(entry_1_x, entry_1_y, image=entry_image_1)
         self.entry_1.place(anchor="center",x=entry_1_x, y=entry_1_y, width=entry_image_1.width()-20, height=entry_image_1.height()-5)
 
+        # imagen label cedula
+        image_image_5_raw = Image.open(str(relative_to_assets("cedula.png")))
+        image_image_5_width= int(background_image.width()*2/self.num_columnas)
+        image_image_5_height= int(background_image.height()/self.num_filas)
+        image_image_5_new_size = ImageOps.contain(image_image_5_raw,(image_image_5_width,image_image_5_height))
+        image_image_5 = ImageTk.PhotoImage(image_image_5_new_size)
+        canvas.create_image(background_image.width()*15/self.num_columnas, background_image.height()*11/self.num_filas, image=image_image_5)
+
+        # comando validacion cedula identidad
+        vcmd = (self.register(self.callback))
+        # cedula entry
+        self.entry_3 = Entry(
+            self,
+            bd=0,
+            bg="#BDBDBD",
+            fg="#000716",
+            highlightthickness=0,
+            validate='all',
+            validatecommand=(vcmd,'%P')
+        )
+        entry_3_x = background_image.width()*15/self.num_columnas
+        entry_3_y = background_image.height()*12/self.num_filas
+        canvas.create_image(entry_3_x, entry_3_y, image=entry_image_1)
+        self.entry_3.place(anchor="center",x=entry_3_x, y=entry_3_y, width=entry_image_1.width()-20, height=entry_image_1.height()-5)
+        
         # entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
         entry_image_2_raw = Image.open(str(relative_to_assets("entry_2.png")))
         entry_image_2_width= int(background_image.width()*5/self.num_columnas)
@@ -87,7 +112,7 @@ class RegistroEstudianteWindow(Tk):
         )
         # self.entry_2.place(x=548.0, y=423.0, width=178.0, height=35.0)
         entry_2_x = background_image.width()*15/self.num_columnas
-        entry_2_y = background_image.height()*13/self.num_filas
+        entry_2_y = background_image.height()*14/self.num_filas
         canvas.create_image(entry_2_x, entry_2_y, image=entry_image_2)
         self.entry_2.place(anchor="center",x=entry_2_x, y=entry_2_y, width=entry_image_2.width()-20, height=entry_image_2.height()-5)
 
@@ -130,7 +155,7 @@ class RegistroEstudianteWindow(Tk):
             relief="flat"
         )
         # button_2.place(x=565.0, y=572.0, width=146.0, height=38.0)
-        button_2.place(anchor="center",x=background_image.width()*15/self.num_columnas, y=background_image.height()*15/self.num_filas, width=button_image_2.width(), height=button_image_2.height())
+        button_2.place(anchor="center",x=background_image.width()*15/self.num_columnas, y=background_image.height()*16/self.num_filas, width=button_image_2.width(), height=button_image_2.height())
 
         # button_image_hover_2 = PhotoImage(file=relative_to_assets("button_hover_2.png"))
         button_image_2_hover_raw = Image.open(str(relative_to_assets("button_hover_2.png")))
@@ -145,7 +170,7 @@ class RegistroEstudianteWindow(Tk):
         image_image_2_height= int(background_image.height()/self.num_filas)
         image_image_2_new_size = ImageOps.contain(image_image_2_raw,(image_image_2_width,image_image_2_height))
         image_image_2 = ImageTk.PhotoImage(image_image_2_new_size)
-        canvas.create_image(background_image.width()*14/self.num_columnas, background_image.height()*10/self.num_filas, image=image_image_2,anchor=constants.N)
+        canvas.create_image(background_image.width()*14/self.num_columnas, background_image.height()*9/self.num_filas, image=image_image_2,anchor=constants.N)
         # canvas.create_image(569.0, 331.0, image=image_image_2)
 
         # image_image_3 = PhotoImage(file=relative_to_assets("image_3.png"))
@@ -154,7 +179,7 @@ class RegistroEstudianteWindow(Tk):
         image_image_3_height= int(background_image.height()/self.num_filas)
         image_image_3_new_size = ImageOps.contain(image_image_3_raw,(image_image_3_width,image_image_3_height))
         image_image_3 = ImageTk.PhotoImage(image_image_3_new_size)
-        canvas.create_image(background_image.width()*14/self.num_columnas, background_image.height()*12/self.num_filas, image=image_image_3,anchor=constants.N)
+        canvas.create_image(background_image.width()*14/self.num_columnas, background_image.height()*13/self.num_filas, image=image_image_3,anchor=constants.N)
         # canvas.create_image(587.0, 403.0, image=image_image_3)
 
         # image_image_5 = PhotoImage(file=relative_to_assets("image_5.png"))
@@ -165,29 +190,38 @@ class RegistroEstudianteWindow(Tk):
         image_image_4 = ImageTk.PhotoImage(image_image_4_new_size)
         canvas.create_image(background_image.width()*15/self.num_columnas, background_image.height()*6/self.num_filas, image=image_image_4)
 
+        
         self.image_references = [
             background_image, entry_image_1, entry_image_2,
             button_image_1, button_image_hover_1, button_image_2,
             button_image_hover_2, image_image_2, image_image_3,
-            image_image_4
+            image_image_4,image_image_5
         ]
 
     def registrar_estudiante(self):
         usu_nom = self.entry_1.get()
         usu_pass = self.entry_2.get()
+        usu_cedu = self.entry_3.get()
 
-        registrar_usuario(usu_nom, usu_pass)
+        mensaje = registrar_usuario(usu_nom, usu_pass,usu_cedu)
 
         self.entry_1.delete(0, 'end')
         self.entry_2.delete(0, 'end')
+        self.entry_3.delete(0, 'end')
 
-        messagebox.showinfo("Registro Exitoso", "Usuario registrado exitosamente")
+        messagebox.showinfo(mensaje[0],mensaje[1])
 
     def abrir_seleccion(self):
         self.destroy()
         from seleccion import SeleccionWindow
         seleccion_window = SeleccionWindow()
         seleccion_window.mainloop()
+
+    def callback(self,P):
+            if (str.isdigit(P) or str(P)=='') and len(str(P))<12:
+                return True
+            else:
+                return False
 
 if __name__ == "__main__":
     registro_estudiante_window = RegistroEstudianteWindow()
