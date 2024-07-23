@@ -4,6 +4,7 @@ from database import login_user
 from PIL import ImageTk, Image, ImageOps
 from monitors import detect_monitor
 from screeninfo import get_monitors
+from biblioteca_est import create_biblioteca_user_window
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -91,7 +92,7 @@ class LoginWindow(Tk):
         self.entry_2.place(anchor="center",x=entry_2_x, y=entry_2_y, width=entry_image_2.width()-20, height=entry_image_2.height()-5)
 
         # botón regresar
-        button_1_width=int(background_image.width()*3/self.num_columnas)
+        button_1_width=int(background_image.width()*4/self.num_columnas)
         button_1_height=int(background_image.height()*3/self.num_filas)
         button_image_1_raw = Image.open(str(relative_to_assets("button_1.png")))
         button_image_1_new_size = ImageOps.contain(button_image_1_raw,(button_1_width,button_1_height))
@@ -105,7 +106,7 @@ class LoginWindow(Tk):
             relief="flat"
         )
         # button_1.place(x=60.0, y=51.0, width=146.0, height=34.0)
-        button_1.place(anchor="center",x=background_image.width()*3/self.num_columnas, y=background_image.height()*1/self.num_filas, width=button_image_1.width(), height=button_image_1.height())
+        button_1.place(anchor="center",x=background_image.width()*3/self.num_columnas, y=background_image.height()*2/self.num_filas, width=button_image_1.width(), height=button_image_1.height())
 
         button_image_hover_1_raw = Image.open(str(relative_to_assets("button_hover_1.png")))
         button_image_hover_1_new_size = ImageOps.contain(button_image_hover_1_raw,(button_1_width,button_1_height))
@@ -182,8 +183,7 @@ class LoginWindow(Tk):
 
         if user:
             self.destroy()
-            print("Login Usuario Exitoso")
-            from biblioteca_est import create_biblioteca_user_window 
+            print("Login Usuario Exitoso") 
 
             est_window = create_biblioteca_user_window()  
             est_window.mainloop()
