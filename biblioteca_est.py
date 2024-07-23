@@ -22,6 +22,14 @@ def cerrarsesion(window):
     seleccion_window = SeleccionWindow()
     seleccion_window.mainloop()
 
+def dis_enable_cantidad(tipo_docu,entry:ctk.CTkEntry,cantidad:StringVar):
+    if tipo_docu != 'Libro':
+        cantidad.set('1')
+        entry.configure(state='disable')
+    else:
+        cantidad.set('')
+        entry.configure(state='normal')
+
 def agregar_prestamo(window):
     prestamo_ventana = ctk.CTkToplevel(window)
     prestamo_ventana.title('Agregar Prestamo')
@@ -31,8 +39,17 @@ def agregar_prestamo(window):
 
     id_var = StringVar()
     cantidad_var = StringVar()
+    get_tipo_documento = StringVar()
 
-    etiqueta_id = ctk.CTkLabel(prestamo_ventana, text='ID del Libro/T.E.G a Solicitar su Prestamo:')
+    etiqueta_docu = ctk.CTkLabel(prestamo_ventana, text='Tipo de Documento a Solicitar su Prestamo:')
+    etiqueta_docu.pack(padx=10, pady=(10, 0))
+    tipo_documento = ['Libro','T.E.G','I.P']
+    combobox = ttk.Combobox(prestamo_ventana,values=tipo_documento,width=6,state='readonly',textvariable=get_tipo_documento)
+    combobox.pack(padx=10, pady=(10, 0))
+    combobox.set('Libro')
+    combobox.bind("<<ComboboxSelected>>",lambda e:dis_enable_cantidad(get_tipo_documento.get(),entrada_cantidad,cantidad_var))
+
+    etiqueta_id = ctk.CTkLabel(prestamo_ventana, text='ID del Documento a Solicitar su Prestamo:')
     etiqueta_id.pack(padx=10, pady=(10, 0))
     entrada_id = ctk.CTkEntry(prestamo_ventana, textvariable=id_var)
     entrada_id.pack(padx=10, pady=(0, 10))
@@ -42,10 +59,10 @@ def agregar_prestamo(window):
     entrada_cantidad = ctk.CTkEntry(prestamo_ventana, textvariable=cantidad_var)
     entrada_cantidad.pack(padx=10, pady=(0, 10))
 
-    boton_agregar = ctk.CTkButton(prestamo_ventana, text='Agregar Prestamo', command=lambda: agregar_prestamo_bd(id_var.get(), cantidad_var.get(), prestamo_ventana, window))
+    boton_agregar = ctk.CTkButton(prestamo_ventana, text='Agregar Prestamo', command=lambda: agregar_prestamo_bd(get_tipo_documento.get(),id_var.get(), cantidad_var.get(), prestamo_ventana, window))
     boton_agregar.pack(padx=10, pady=10)
     
-def agregar_prestamo_bd(id, cantidad_prestamo, prestamo_ventana, window):
+def agregar_prestamo_bd(tipo_documento,id, cantidad_prestamo, prestamo_ventana, window):
     libro_data = obtener_libro_por_id(id)
 
     if not libro_data:
@@ -155,7 +172,7 @@ class create_biblioteca_user_window(Tk):
         self.monitor_height=self.monitor.height
         # self.monitor_width=self.monitors[0].width
         # self.monitor_height=self.monitors[0].height
-        # self.configure(bg="#FFFFFF")
+        self.configure(bg="#FFFFFF")
         self.title("Biblioteca UTS")
         self.resizable(False, False)
         self.num_columnas = 60
@@ -171,7 +188,7 @@ class create_biblioteca_user_window(Tk):
 
         canvas = Canvas(
             self,
-            # bg="#FFFFFF",
+            bg="#FFFFFF",
             height=self.background_image.height(),
             width=self.background_image.width(),
             bd=0,
