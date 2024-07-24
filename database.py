@@ -96,8 +96,9 @@ def login_admin(usu_nom, usu_pass, admin_pin):
     hashed_pin = hash_password(admin_pin)
     conn = create_connection()
     c = conn.cursor()
-    c.execute("SELECT * FROM usuarios WHERE usu_nom = ? AND usu_pass = ? AND admin_pin = ?",
-              (usu_nom, hashed_contraseña, hashed_pin))
+    c.execute(f"SELECT * FROM {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.usuarios_sistema\
+              INNER JOIN {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.usuarios\
+              ON ({conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.[usuarios_sistema].fk_usu_id = {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.[usuarios].usu_id) WHERE usu_nom = ? AND usu_pass = ? AND admin_pin = ? AND rol = ?", (usu_nom, hashed_contraseña,hashed_pin,'admin'))
     user = c.fetchone()
     conn.close()
     return user

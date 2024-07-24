@@ -25,7 +25,7 @@ class LoginWindow(Tk):
         self.configure(bg="#FFFFFF")
         self.title("Biblioteca UTS")
         self.resizable(False, False)
-        self.num_columnas = 30
+        self.num_columnas = 60
         self.num_filas = 18
         self.create_widgets()
 
@@ -52,7 +52,7 @@ class LoginWindow(Tk):
 
         # entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
         entry_image_1_raw = Image.open(str(relative_to_assets("entry_1.png")))
-        entry_image_1_width= int(background_image.width()*5/self.num_columnas)
+        entry_image_1_width= int(background_image.width()*10/self.num_columnas)
         entry_image_1_height= int(background_image.height()*3/self.num_filas)
         entry_image_1_new_size = ImageOps.contain(entry_image_1_raw,(entry_image_1_width,entry_image_1_height))
         entry_image_1 = ImageTk.PhotoImage(entry_image_1_new_size)
@@ -65,14 +65,14 @@ class LoginWindow(Tk):
             highlightthickness=0
         )
         # self.entry_1.place(x=550.0, y=351.0, width=178.0, height=35.0)
-        entry_1_x = background_image.width()*15/self.num_columnas
+        entry_1_x = background_image.width()*30/self.num_columnas
         entry_1_y = background_image.height()*11/self.num_filas
         canvas.create_image(entry_1_x, entry_1_y, image=entry_image_1)
         self.entry_1.place(anchor="center",x=entry_1_x, y=entry_1_y, width=entry_image_1.width()-20, height=entry_image_1.height()-5)
 
         # entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
         entry_image_2_raw = Image.open(str(relative_to_assets("entry_2.png")))
-        entry_image_2_width= int(background_image.width()*5/self.num_columnas)
+        entry_image_2_width= int(background_image.width()*10/self.num_columnas)
         entry_image_2_height= int(background_image.height()*3/self.num_filas)
         entry_image_2_new_size = ImageOps.contain(entry_image_2_raw,(entry_image_2_width,entry_image_2_height))
         entry_image_2 = ImageTk.PhotoImage(entry_image_2_new_size)
@@ -86,13 +86,13 @@ class LoginWindow(Tk):
             highlightthickness=0
         )
         # self.entry_2.place(x=548.0, y=423.0, width=178.0, height=35.0)
-        entry_2_x = background_image.width()*15/self.num_columnas
+        entry_2_x = background_image.width()*30/self.num_columnas
         entry_2_y = background_image.height()*13/self.num_filas
         canvas.create_image(entry_2_x, entry_2_y, image=entry_image_2)
         self.entry_2.place(anchor="center",x=entry_2_x, y=entry_2_y, width=entry_image_2.width()-20, height=entry_image_2.height()-5)
 
         # botón regresar
-        button_1_width=int(background_image.width()*4/self.num_columnas)
+        button_1_width=int(background_image.width()*7/self.num_columnas)
         button_1_height=int(background_image.height()*3/self.num_filas)
         button_image_1_raw = Image.open(str(relative_to_assets("button_1.png")))
         button_image_1_new_size = ImageOps.contain(button_image_1_raw,(button_1_width,button_1_height))
@@ -106,7 +106,7 @@ class LoginWindow(Tk):
             relief="flat"
         )
         # button_1.place(x=60.0, y=51.0, width=146.0, height=34.0)
-        button_1.place(anchor="center",x=background_image.width()*3/self.num_columnas, y=background_image.height()*2/self.num_filas, width=button_image_1.width(), height=button_image_1.height())
+        button_1.place(anchor="center",x=background_image.width()*6/self.num_columnas, y=background_image.height()*2/self.num_filas, width=button_image_1.width(), height=button_image_1.height())
 
         button_image_hover_1_raw = Image.open(str(relative_to_assets("button_hover_1.png")))
         button_image_hover_1_new_size = ImageOps.contain(button_image_hover_1_raw,(button_1_width,button_1_height))
@@ -117,7 +117,7 @@ class LoginWindow(Tk):
         # botón iniciar sesión
         # button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
         button_image_2_raw = Image.open(str(relative_to_assets("button_2.png")))
-        button_2_width=int(background_image.width()*4/self.num_columnas)
+        button_2_width=int(background_image.width()*8/self.num_columnas)
         button_2_height=int(background_image.height()*3/self.num_filas)
         button_image_2_new_size = ImageOps.contain(button_image_2_raw,(button_2_width,button_2_height))
         button_image_2 = ImageTk.PhotoImage(button_image_2_new_size)
@@ -130,7 +130,7 @@ class LoginWindow(Tk):
             relief="flat"
         )
         # button_2.place(x=565.0, y=572.0, width=146.0, height=38.0)
-        button_2.place(anchor="center",x=background_image.width()*15/self.num_columnas, y=background_image.height()*15/self.num_filas, width=button_image_2.width(), height=button_image_2.height())
+        button_2.place(anchor="center",x=background_image.width()*30/self.num_columnas, y=background_image.height()*15/self.num_filas, width=button_image_2.width(), height=button_image_2.height())
 
         # button_image_hover_2 = PhotoImage(file=relative_to_assets("button_hover_2.png"))
         button_image_2_hover_raw = Image.open(str(relative_to_assets("button_hover_2.png")))
@@ -141,29 +141,29 @@ class LoginWindow(Tk):
 
         # image_image_2 = PhotoImage(file=relative_to_assets("image_2.png"))
         image_image_2_raw = Image.open(str(relative_to_assets("image_2.png")))
-        image_image_2_width= int(background_image.width()*2/self.num_columnas)
+        image_image_2_width= int(background_image.width()*4/self.num_columnas)
         image_image_2_height= int(background_image.height()/self.num_filas)
         image_image_2_new_size = ImageOps.contain(image_image_2_raw,(image_image_2_width,image_image_2_height))
         image_image_2 = ImageTk.PhotoImage(image_image_2_new_size)
-        canvas.create_image(background_image.width()*14/self.num_columnas, background_image.height()*10/self.num_filas, image=image_image_2,anchor=constants.N)
+        canvas.create_image(background_image.width()*25/self.num_columnas, background_image.height()*10/self.num_filas, image=image_image_2,anchor=constants.NW)
         # canvas.create_image(569.0, 331.0, image=image_image_2)
 
         # image_image_3 = PhotoImage(file=relative_to_assets("image_3.png"))
         image_image_3_raw = Image.open(str(relative_to_assets("image_3.png")))
-        image_image_3_width= int(background_image.width()*3/self.num_columnas)
+        image_image_3_width= int(background_image.width()*6/self.num_columnas)
         image_image_3_height= int(background_image.height()/self.num_filas)
         image_image_3_new_size = ImageOps.contain(image_image_3_raw,(image_image_3_width,image_image_3_height))
         image_image_3 = ImageTk.PhotoImage(image_image_3_new_size)
-        canvas.create_image(background_image.width()*14/self.num_columnas, background_image.height()*12/self.num_filas, image=image_image_3,anchor=constants.N)
+        canvas.create_image(background_image.width()*25/self.num_columnas, background_image.height()*12/self.num_filas, image=image_image_3,anchor=constants.NW)
         # canvas.create_image(587.0, 403.0, image=image_image_3)
 
         # image_image_5 = PhotoImage(file=relative_to_assets("image_5.png"))
         image_image_5_raw = Image.open(str(relative_to_assets("image_5.png")))
-        image_image_5_width= int(background_image.width()*15/self.num_columnas)
+        image_image_5_width= int(background_image.width()*25/self.num_columnas)
         image_image_5_height= int(background_image.height()*5/self.num_filas)
         image_image_5_new_size = ImageOps.contain(image_image_5_raw,(image_image_5_width,image_image_5_height))
         image_image_5 = ImageTk.PhotoImage(image_image_5_new_size)
-        canvas.create_image(background_image.width()*15/self.num_columnas, background_image.height()*6/self.num_filas, image=image_image_5)
+        canvas.create_image(background_image.width()*30/self.num_columnas, background_image.height()*6/self.num_filas, image=image_image_5)
 
         self.image_references = [
             background_image, entry_image_1, entry_image_2,
