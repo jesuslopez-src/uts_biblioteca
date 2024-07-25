@@ -236,16 +236,18 @@ def mostrar_tabla_libros(window, search_entry, table):
         style.configure("Treeview.Row", font=("Arial", 12))
         style.configure("Treeview", background="#FFFFFF")
 
-        table = ttk.Treeview(window, columns=['id', 'nombre', 'autor', 'año', 'cantidad', 'tipo'], show="headings")
+        table = ttk.Treeview(window, columns=['id', 'titulo', 'autor', 'año_publicacion', 'cantidad', 'edicion','area_de_conocimiento'], show="headings")
 
         table.heading('id', text='ID', anchor='w')
-        table.heading('nombre', text='NOMBRE', anchor='w')
+        table.heading('titulo', text='TITULO', anchor='w')
         table.heading('autor', text='AUTOR', anchor='w')
-        table.heading('año', text='AÑO', anchor='w')
+        table.heading('año_publicacion', text='AÑO', anchor='w')
         table.heading('cantidad', text='CANTIDAD', anchor='w')
-        table.heading('tipo', text='TIPO', anchor='w')
+        table.heading('edicion', text='EDICION', anchor='w')
+        table.heading('area_de_conocimiento', text='CATEGORIA', anchor='w')
 
         for row in data:
+            row = tuple(row)
             table.insert("", "end", values=row)
 
         table.tag_configure("evenrow", background="#f5f5f5")
@@ -285,4 +287,5 @@ def busqueda(window, table, search_entry, event=None):
     table.delete(*table.get_children())
 
     for row in filtered_data:
+        row = tuple(row)
         table.insert("", "end", values=row)

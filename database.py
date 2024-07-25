@@ -20,10 +20,6 @@ def create_connection():
     print(conn.getinfo(pyodbc.SQL_USER_NAME))
     return conn
 
-# def create_connection():
-#     conn = pyodbc.connect('biblioteca')
-#     return conn
-
 def hash_password(password):
     return hashlib.sha256(password.encode('utf-8')).hexdigest()
 
@@ -152,7 +148,7 @@ def obtener_libros():
     conn = create_connection()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT id, nombre, autor, año, cantidad, tipo FROM libros")
+    cursor.execute(f"SELECT id, titulo, autor, año_publicacion, cantidad, edicion, area_de_conocimiento FROM {conn.getinfo(pyodbc.SQL_DATABASE_NAME)}.{conn.getinfo(pyodbc.SQL_USER_NAME)}.libros")
     libros = cursor.fetchall()
     conn.close()
 
@@ -168,55 +164,55 @@ def obtener_teg():
 
     return teg
 
-# def agregar_libro(nombre, autor, año, cantidad, tipo):
-#     conn = create_connection()
-#     cursor = conn.cursor()
+def agregar_libro(nombre, autor, año, cantidad, tipo):
+    conn = create_connection()
+    cursor = conn.cursor()
 
-#     cursor.execute('INSERT INTO libros (nombre, autor, año, cantidad, tipo) VALUES (?, ?, ?, ?, ?)', (nombre, autor, año, cantidad, tipo))
-#     conn.commit()
-#     conn.close()
+    cursor.execute('INSERT INTO libros (nombre, autor, año, cantidad, tipo) VALUES (?, ?, ?, ?, ?)', (nombre, autor, año, cantidad, tipo))
+    conn.commit()
+    conn.close()
 
-# def editar_libro(id, nombre, autor, año, cantidad, tipo):
-#     conn = create_connection()
-#     cursor = conn.cursor()
+def editar_libro(id, nombre, autor, año, cantidad, tipo):
+    conn = create_connection()
+    cursor = conn.cursor()
 
-#     cursor.execute('UPDATE libros SET nombre = ?, autor = ?, año = ?, cantidad = ?, tipo = ? WHERE id = ?', (nombre, autor, año, cantidad, tipo, id))
-#     conn.commit()
-#     conn.close()
+    cursor.execute('UPDATE libros SET nombre = ?, autor = ?, año = ?, cantidad = ?, tipo = ? WHERE id = ?', (nombre, autor, año, cantidad, tipo, id))
+    conn.commit()
+    conn.close()
 
-# def eliminar_libro(id):
-#     conn = create_connection()
-#     cursor = conn.cursor()
+def eliminar_libro(id):
+    conn = create_connection()
+    cursor = conn.cursor()
 
-#     cursor.execute('DELETE FROM libros WHERE id = ?', (id,))
-#     cursor.execute('SELECT MAX(id) FROM libros')
-#     max_id = cursor.fetchone()[0]
-#     cursor.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'libros'))
-#     conn.commit()
-#     conn.close()
+    cursor.execute('DELETE FROM libros WHERE id = ?', (id,))
+    cursor.execute('SELECT MAX(id) FROM libros')
+    max_id = cursor.fetchone()[0]
+    cursor.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'libros'))
+    conn.commit()
+    conn.close()
 
   
-# def eliminar_prestamo(id):
-#     conn = create_connection()
-#     cursor = conn.cursor()
+def eliminar_prestamo(id):
+    conn = create_connection()
+    cursor = conn.cursor()
 
-#     cursor.execute('DELETE FROM prestamos WHERE id = ?', (id,))
-#     cursor.execute('SELECT MAX(id) FROM prestamos')
-#     max_id = cursor.fetchone()[0]
-#     cursor.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'prestamos'))
-#     conn.commit()
-#     conn.close()
+    cursor.execute('DELETE FROM prestamos WHERE id = ?', (id,))
+    cursor.execute('SELECT MAX(id) FROM prestamos')
+    max_id = cursor.fetchone()[0]
+    cursor.execute('UPDATE sqlite_sequence SET seq = ? WHERE name = ?', (max_id, 'prestamos'))
+    conn.commit()
+    conn.close()
     
 
-# def obtener_prestamos():
-#     conn = create_connection()
-#     cursor = conn.cursor()
+def obtener_prestamos():
+    conn = create_connection()
+    cursor = conn.cursor()
 
-#     cursor.execute("SELECT id, nombre_prestamo, autor_prestamo, año_prestamo, cantidad_prestamo, tipo_prestamo, fecha_prestamo FROM prestamos")
-#     prestamos = cursor.fetchall()
-#     conn.close()
+    cursor.execute("SELECT id, nombre_prestamo, autor_prestamo, año_prestamo, cantidad_prestamo, tipo_prestamo, fecha_prestamo FROM prestamos")
+    prestamos = cursor.fetchall()
+    conn.close()
 
-#     return prestamos
+    return prestamos
 
 # def obtener_libros():
 #     conn = create_connection()

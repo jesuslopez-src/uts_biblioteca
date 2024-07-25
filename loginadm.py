@@ -99,7 +99,6 @@ class LoginAdmin(Tk):
         canvas.create_image(entry_3_x, entry_3_y, image=self.entry_image_3)
         self.entry_3.place(anchor="center",x=entry_3_x, y=entry_3_y, width=self.entry_image_3.width()-20, height=self.entry_image_3.height()-5)
         
-        
         # botón regresar
         button_1_width=int(self.background_image.width()*7/self.num_columnas)
         button_1_height=int(self.background_image.height()*3/self.num_filas)
@@ -209,10 +208,10 @@ class LoginAdmin(Tk):
         if user:
             self.destroy()
             print("Acceso a Admin Logrado con Exito")
-            from biblioteca_adm import create_biblioteca_admin_window 
+            from biblioteca_admui import create_biblioteca_admin_window 
 
-            admin_window = create_biblioteca_admin_window() 
-            admin_window.mainloop()
+            create_biblioteca_admin_window() 
+            
         else:
             messagebox.showinfo(title="Error", message="Usuario, contraseña o pin de administrador incorrectos")
 
