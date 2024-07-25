@@ -94,40 +94,6 @@ def obtener_libro_por_id(id):
 def get_max_width(data, col_index):
     return max(len(str(row[col_index])) for row in data)
 
-def mostrar_tabla(window):
-    data = obtener_libros()
-
-    if not data:
-        messagebox.showinfo("No hay Datos Existentes", "Actualmente la tabla está vacia en la Base de Datos...")
-        return
-
-    style = ttk.Style()
-    style.theme_use("default")
-    style.configure("Treeview.Heading", font=("Arial", 9, "bold"), background="#dcdcdc")
-    style.configure("Treeview.Row", font=("Calibri", 12))
-    style.configure("Treeview", background="#dcdcdc")
-
-    table_frame = ttk.Frame(window, padding=1, borderwidth=0.1, relief=tk.FLAT)
-    table_frame.pack()
-
-    column_names = ['id', 'nombre', 'autor', 'año', 'cantidad', 'tipo']
-
-    table = ttk.Treeview(window, columns=column_names, show="headings")
-
-    for col in column_names:
-        table.heading(col, text=col.upper(), anchor=tk.CENTER)
-        table.column(col, width=get_max_width(data, column_names.index(col)), anchor=tk.CENTER)
-
-    for row in data:
-        table.insert("", tk.END, values=row)
-
-    table.tag_configure("evenrow", background="#f5f5f5")
-    table.tag_configure("oddrow", background="#fff")
-    table.tag_configure("headings", background="#333", foreground="#fff")
-
-    table.pack(fill=tk.BOTH, expand=True)
-    table.place(x=265, y=362, width=758, height=396)
-
 def mostrar_TEG(window):
     data = obtener_teg()
 
@@ -255,9 +221,9 @@ class create_biblioteca_user_window(Tk):
         image_image_5_height= int(self.background_image.height()*15/self.num_filas)
         image_image_5_new_size = ImageOps.contain(image_image_5_raw,(image_image_5_width,image_image_5_height))
         self.image_image_5 = ImageTk.PhotoImage(image_image_5_new_size)
-        positionx_5_6 = self.background_image.width()*30/self.num_columnas
-        positiony_5_6 = self.background_image.height()*19/self.num_filas
-        canvas.create_image(positionx_5_6, positiony_5_6, image=self.image_image_5)
+        self.positionx_5_6 = self.background_image.width()*30/self.num_columnas
+        self.positiony_5_6 = self.background_image.height()*19/self.num_filas
+        canvas.create_image(self.positionx_5_6, self.positiony_5_6, image=self.image_image_5)
         # canvas.create_image(644.0, 559.0, image=self.image_image_5)
 
         # self.image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
@@ -266,7 +232,7 @@ class create_biblioteca_user_window(Tk):
         image_image_6_height= image_image_5_height
         image_image_6_new_size = ImageOps.contain(image_image_6_raw,(image_image_6_width,image_image_6_height))
         self.image_image_6 = ImageTk.PhotoImage(image_image_6_new_size)
-        canvas.create_image(positionx_5_6, positiony_5_6, image=self.image_image_6)
+        canvas.create_image(self.positionx_5_6, self.positiony_5_6, image=self.image_image_6)
         # canvas.create_image(644.0, 560.0, image=self.image_image_6)
 
         # self.image_image_7 = PhotoImage(file=relative_to_assets("image_7.png"))
@@ -334,6 +300,7 @@ class create_biblioteca_user_window(Tk):
         button_4_height=int(self.background_image.height()*3/self.num_filas)
         button_image_4_new_size = ImageOps.contain(button_image_4_raw,(button_4_width,button_4_height))
         button_image_4 = ImageTk.PhotoImage(button_image_4_new_size)
+        self.table:ttk.Treeview
         button_4 = Button(
             command=lambda: mostrar_tabla(self),
             image=button_image_4,
@@ -351,6 +318,41 @@ class create_biblioteca_user_window(Tk):
         button_image_hover_4 = ImageTk.PhotoImage(button_image_4_hover_new_size)
         button_4.bind('<Enter>', lambda e: button_4.config(image=button_image_hover_4))
         button_4.bind('<Leave>', lambda e: button_4.config(image=button_image_4))
+
+def mostrar_tabla(window:create_biblioteca_user_window):
+    data = obtener_libros()
+
+    if not data:
+        messagebox.showinfo("No hay Datos Existentes", "Actualmente la tabla está vacia en la Base de Datos...")
+        return
+
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure("Treeview.Heading", font=("Arial", 9, "bold"), background="#dcdcdc")
+    style.configure("Treeview.Row", font=("Calibri", 12))
+    style.configure("Treeview", background="#dcdcdc")
+
+    # table_frame = ttk.Frame(window, padding=1, borderwidth=0.1, relief=tk.FLAT)
+    # table_frame.place(x=window.positionx_5_6 , y=window.positiony_5_6, width=window.image_image_5.width(), height=window.image_image_5.height())
+
+    column_names = ['id', 'titulo', 'autor', 'año_publicacion', 'cantidad', 'edicion','area_de_conocimiento']
+
+    window.table = ttk.Treeview(window, columns=column_names, show="headings")
+
+    for col in column_names:
+        window.table.heading(col, text=col.upper(), anchor=tk.CENTER)
+        window.table.column(col, width=get_max_width(data, column_names.index(col)), anchor=tk.CENTER)
+
+    for row in data:
+        row = tuple(row)
+        window.table.insert("", tk.END, values=row)
+
+    window.table.tag_configure("evenrow", background="#f5f5f5")
+    window.table.tag_configure("oddrow", background="#fff")
+    window.table.tag_configure("headings", background="#333", foreground="#fff")
+
+    # table.pack(fill=tk.BOTH, expand=True)
+    window.table.place(anchor="center",x=window.positionx_5_6 , y=window.positiony_5_6, width=window.image_image_5.width()-20, height=window.image_image_5.height()-20)
 
 if __name__ == "__main__":
     create_biblioteca_user_window()
