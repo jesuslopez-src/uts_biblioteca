@@ -94,37 +94,29 @@ def create_biblioteca_admin_window():
    button_1.bind('<Leave>', button_1_leave)
 
    # figura de administrador
-   image_image_3_raw = Image.open(str(relative_to_assets("image_3.png")))
-   image_image_3_width= int(background_image.width()*7/num_columnas)
-   image_image_3_height= int(background_image.height()*5/num_filas)
-   image_image_3_new_size = ImageOps.contain(image_image_3_raw,(image_image_3_width,image_image_3_height))
-   image_image_3 = ImageTk.PhotoImage(image_image_3_new_size)
-   canvas.create_image(background_image.width()*50/num_columnas, background_image.height()*8/num_filas, image=image_image_3,anchor='center')
+   image_image_3 = crear_imagen(background_image,str(relative_to_assets("image_3.png")),7,5,num_columnas,num_filas)
+   canvas.create_image(background_image.width()*55/num_columnas, background_image.height()*10/num_filas, image=image_image_3,anchor='center')
 
    # fondo rojo botones de la izquierda
-   image_image_4 = crear_imagen(background_image,str(relative_to_assets("image_4.png")),30,5,num_columnas,num_filas)
-   canvas.create_image(background_image.width()*10/num_columnas, background_image.height()*15/num_filas, image=image_image_4,anchor='center')
-   # image_image_4_raw = Image.open(str(relative_to_assets("image_4.png")))
-   # image_image_4_width= int(background_image.width()*30/num_columnas)
-   # image_image_4_height= int(background_image.height()*5/num_filas)
-   # image_image_4_new_size = ImageOps.contain(image_image_4_raw,(image_image_4_width,image_image_4_height))
-   # image_image_4 = ImageTk.PhotoImage(image_image_4_new_size)
-   # canvas.create_image(background_image.width()*10/num_columnas, background_image.height()*15/num_filas, image=image_image_4,anchor='center')
-
+   image_image_4 = crear_imagen(background_image,str(relative_to_assets("image_4.png")),30,7,num_columnas,num_filas)
+   canvas.create_image(background_image.width()*5/num_columnas, background_image.height()*15/num_filas, image=image_image_4,anchor='center')
+  
    # cuadro rojo arriba de la tabla (fondo de los botones)
-   image_image_5 = crear_imagen(background_image,str(relative_to_assets("image_5.png")),35,5,num_columnas,num_filas)
-   canvas.create_image(background_image.width()*15/num_columnas, background_image.height()*15/num_filas, image=image_image_5,anchor='center')
+   image_image_5 = crear_imagen(background_image,str(relative_to_assets("image_5.png")),35,10,num_columnas,num_filas)
+   canvas.create_image(background_image.width()*30/num_columnas, background_image.height()*11/num_filas, image=image_image_5,anchor='center')
 
    # cuadro rojo detras de la tabla
-   image_image_6 = crear_imagen(background_image,str(relative_to_assets("image_6.png")),35,5,num_columnas,num_filas)
-   canvas.create_image(background_image.width()*15/num_columnas, background_image.height()*15/num_filas, image=image_image_6,anchor='center')
+   tabla_image_x = background_image.width()*30/num_columnas
+   tabla_image_y =  background_image.height()*19/num_filas
+   image_image_6 = crear_imagen(background_image,str(relative_to_assets("image_6.png")),42,15,num_columnas,num_filas)
+   canvas.create_image(tabla_image_x, tabla_image_y, image=image_image_6,anchor='center')
 
    # imagen para la tabla
-   image_image_7 = crear_imagen(background_image,str(relative_to_assets("image_7.png")),35,5,num_columnas,num_filas)
-   canvas.create_image(background_image.width()*15/num_columnas, background_image.height()*15/num_filas, image=image_image_7,anchor='center')
+   image_image_7 = crear_imagen(background_image,str(relative_to_assets("image_7.png")),42,15,num_columnas,num_filas)
+   canvas.create_image(tabla_image_x, tabla_image_y, image=image_image_7,anchor='center')
 
    # boton agregar
-   button_image_2 = crear_imagen(background_image,str(relative_to_assets("button_2.png")),8,3,num_columnas,num_filas)
+   button_image_2 = crear_imagen(background_image,str(relative_to_assets("button_2.png")),7,3,num_columnas,num_filas)
    button_2 = Button(
       command=lambda: agregar_fila(window, search_entry, table),
       image=button_image_2,
@@ -132,9 +124,9 @@ def create_biblioteca_admin_window():
       highlightthickness=0,
       relief="flat"
    )
-   button_2.place(anchor="center",x=background_image.width()*6/num_columnas, y=background_image.height()*12/num_filas, width=button_image_2.width(), height=button_image_2.height())
+   button_2.place(anchor="center",x=background_image.width()*5/num_columnas, y=background_image.height()*13/num_filas, width=button_image_2.width(), height=button_image_2.height())
    
-   button_image_hover_2 = crear_imagen(background_image,str(relative_to_assets("button_hover_2.png")),8,3,num_columnas,num_filas)
+   button_image_hover_2 = crear_imagen(background_image,str(relative_to_assets("button_hover_2.png")),7,3,num_columnas,num_filas)
    def button_2_hover(e):
       button_2.config(
          image=button_image_hover_2
@@ -148,7 +140,7 @@ def create_biblioteca_admin_window():
    button_2.bind('<Leave>', button_2_leave)
 
    # boton prestamos
-   button_image_3 = crear_imagen(background_image,str(relative_to_assets("button_3.png")),8,3,num_columnas,num_filas)
+   button_image_3 = crear_imagen(background_image,str(relative_to_assets("button_3.png")),7,3,num_columnas,num_filas)
    button_3 = Button(
       command=lambda: prestamos(window),
       image=button_image_3,
@@ -156,9 +148,9 @@ def create_biblioteca_admin_window():
       highlightthickness=0,
       relief="flat"
    )
-   button_3.place(anchor="center",x=background_image.width()*6/num_columnas, y=background_image.height()*14/num_filas, width=button_image_3.width(), height=button_image_3.height())
+   button_3.place(anchor="s",x=background_image.width()*30/num_columnas, y=background_image.height()*11/num_filas, width=button_image_3.width(), height=button_image_3.height())
 
-   button_image_hover_3 = crear_imagen(background_image,str(relative_to_assets("button_hover_3.png")),8,3,num_columnas,num_filas)
+   button_image_hover_3 = crear_imagen(background_image,str(relative_to_assets("button_hover_3.png")),7,3,num_columnas,num_filas)
    def button_3_hover(e):
       button_3.config(
          image=button_image_hover_3
@@ -172,7 +164,7 @@ def create_biblioteca_admin_window():
    button_3.bind('<Leave>', button_3_leave)
 
    # boton TEG
-   button_image_4 = crear_imagen(background_image,str(relative_to_assets("button_4.png")),8,3,num_columnas,num_filas)
+   button_image_4 = crear_imagen(background_image,str(relative_to_assets("button_4.png")),7,3,num_columnas,num_filas)
    button_4 = Button(
       command=lambda: mostrar_TEG(window, search_entry, table),
       image=button_image_4,
@@ -180,9 +172,9 @@ def create_biblioteca_admin_window():
       highlightthickness=0,
       relief="flat"
    )
-   button_4.place(anchor="center",x=background_image.width()*6/num_columnas, y=background_image.height()*16/num_filas, width=button_image_4.width(), height=button_image_4.height())
+   button_4.place(anchor="s",x=background_image.width()*39/num_columnas, y=background_image.height()*11/num_filas, width=button_image_4.width(), height=button_image_4.height())
 
-   button_image_hover_4 = crear_imagen(background_image,str(relative_to_assets("button_hover_4.png")),8,3,num_columnas,num_filas)
+   button_image_hover_4 = crear_imagen(background_image,str(relative_to_assets("button_hover_4.png")),7,3,num_columnas,num_filas)
    def button_4_hover(e):
       button_4.config(
          image=button_image_hover_4
@@ -203,14 +195,14 @@ def create_biblioteca_admin_window():
          fg="#000716",
          highlightthickness=0
       )
-   entry_image_1 = crear_imagen(background_image,str(relative_to_assets("entry_1.png")),6,4,num_columnas,num_filas)
-   entry_x= background_image.width()*15/num_columnas
-   entry_y=  background_image.height()*15/num_filas
-   canvas.create_image(entry_x,entry_y, image=entry_image_1,anchor='center')
-   search_entry.place(anchor="center",x=entry_x, y=entry_y, width=entry_image_1.width()-20, height=entry_image_1.height()-5)
+   entry_image_1 = crear_imagen(background_image,str(relative_to_assets("entry_1.png")),9,6,num_columnas,num_filas)
+   entry_x= background_image.width()*20/num_columnas
+   entry_y=  background_image.height()*11/num_filas
+   canvas.create_image(entry_x,entry_y, image=entry_image_1,anchor='s')
+   search_entry.place(anchor="s",x=entry_x, y=entry_y, width=entry_image_1.width()-20, height=entry_image_1.height()-5)
 
    # boton de editar
-   button_image_5 = crear_imagen(background_image,str(relative_to_assets("button_5.png")),8,3,num_columnas,num_filas)
+   button_image_5 = crear_imagen(background_image,str(relative_to_assets("button_5.png")),7,3,num_columnas,num_filas)
    button_5 = Button(
       command=lambda: edit_row(window, table),
       image=button_image_5,
@@ -219,12 +211,12 @@ def create_biblioteca_admin_window():
       relief="flat"
    )
    button_5.place(anchor="center",
-                  x=background_image.width()*6/num_columnas,
-                  y=background_image.height()*18/num_filas,
+                  x=background_image.width()*5/num_columnas,
+                  y=background_image.height()*15/num_filas,
                   width=button_image_5.width(), 
                   height=button_image_5.height())
 
-   button_image_hover_5 = crear_imagen(background_image,str(relative_to_assets("button_hover_5.png")),8,3,num_columnas,num_filas)
+   button_image_hover_5 = crear_imagen(background_image,str(relative_to_assets("button_hover_5.png")),7,3,num_columnas,num_filas)
    
    def button_5_hover(e):
       button_5.config(
@@ -239,8 +231,12 @@ def create_biblioteca_admin_window():
    button_5.bind('<Leave>', button_5_leave)
    
    # Init tabla
-   table = ttk.Treeview(window, columns=['id', 'nombre', 'autor', 'año', 'cantidad', 'tipo'], show="headings")
-   table = mostrar_tabla_libros(window, search_entry, table)
+   table = mostrar_tabla_libros(window, search_entry)
+   table.place(anchor="center",
+                  x=tabla_image_x,
+                  y=tabla_image_y,
+                  width=image_image_7.width()-16, 
+                  height=image_image_7.height()-16)
    
    def edit_row(window, table):
          selected_values = get_selected_row(table)
@@ -251,7 +247,7 @@ def create_biblioteca_admin_window():
    # boton de eliminar
    button_image_6 = crear_imagen(background_image
                            ,str(relative_to_assets("button_6.png")),
-                           8,
+                           7,
                            3,
                            num_columnas,
                            num_filas)
@@ -263,14 +259,14 @@ def create_biblioteca_admin_window():
       relief="flat"
    )
    button_6.place(anchor="center",
-                  x=background_image.width()*6/num_columnas,
-                  y=background_image.height()*20/num_filas,
+                  x=background_image.width()*5/num_columnas,
+                  y=background_image.height()*17/num_filas,
                   width=button_image_6.width(), 
                   height=button_image_6.height())
 
    button_image_hover_6 = crear_imagen(background_image
                            ,str(relative_to_assets("button_hover_6.png")),
-                           8,
+                           7,
                            3,
                            num_columnas,
                            num_filas)
@@ -298,8 +294,12 @@ def create_biblioteca_admin_window():
                return None
 
 
-   button_image_7 = PhotoImage(
-      file=relative_to_assets("button_7.png"))
+   button_image_7 = crear_imagen(background_image
+                           ,str(relative_to_assets("button_7.png")),
+                           7,
+                           3,
+                           num_columnas,
+                           num_filas)
    button_7 = Button(
       command=lambda: registroadmin(window), 
       image=button_image_7,
@@ -307,15 +307,18 @@ def create_biblioteca_admin_window():
       highlightthickness=0,
       relief="flat"
    )
-   button_7.place(
-      x=108.0,
-      y=655.0,
-      width=146.0,
-      height=38.0
-   )
+   button_7.place(anchor="center",
+                  x=background_image.width()*55/num_columnas,
+                  y=background_image.height()*13/num_filas,
+                  width=button_image_7.width(), 
+                  height=button_image_7.height())
 
-   button_image_hover_7 = PhotoImage(
-      file=relative_to_assets("button_hover_7.png"))
+   button_image_hover_7 = crear_imagen(background_image
+                           ,str(relative_to_assets("button_hover_7.png")),
+                           7,
+                           3,
+                           num_columnas,
+                           num_filas)
 
    def button_7_hover(e):
       button_7.config(
@@ -330,12 +333,15 @@ def create_biblioteca_admin_window():
    button_7.bind('<Leave>', button_7_leave)
 
 
-   image_image_8 = PhotoImage(
-      file=relative_to_assets("image_8.png"))
-   image_8 = canvas.create_image(
-      639.0,
-      216.0,
-      image=image_image_8
-   )
+   image_image_8 = crear_imagen(background_image
+                           ,str(relative_to_assets("image_8.png")),
+                           30,
+                           5,
+                           num_columnas,
+                           num_filas)
+   canvas.create_image(background_image.width()*30/num_columnas, 
+                       background_image.height()*7/num_filas, 
+                       image=image_image_8,anchor='center')
+   
    window.resizable(False, False)
    window.mainloop()

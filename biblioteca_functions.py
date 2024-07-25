@@ -34,7 +34,7 @@ def agregar_fila(window, search_entry, table):
     entrada_cantidad = ctk.CTkEntry(agregar_ventana)
     entrada_cantidad.pack(padx=10, pady=(0, 10))
 
-    etiqueta_tipo = ctk.CTkLabel(agregar_ventana, text='Tipo:')
+    etiqueta_tipo = ctk.CTkLabel(agregar_ventana, text='Categoría:')
     etiqueta_tipo.pack(padx=10, pady=(10, 0))
     entrada_tipo = ctk.CTkEntry(agregar_ventana)
     entrada_tipo.pack(padx=10, pady=(0, 10))
@@ -105,7 +105,7 @@ def editar_fila(window, values, table):
     entrada_cantidad.insert(0, values[4])
     entrada_cantidad.pack(padx=10, pady=(0, 10))
 
-    etiqueta_tipo = ctk.CTkLabel(editar_ventana, text='Tipo:')
+    etiqueta_tipo = ctk.CTkLabel(editar_ventana, text='Categoría:')
     etiqueta_tipo.pack(padx=10, pady=(10, 0))
     entrada_tipo = ctk.CTkEntry(editar_ventana)
     entrada_tipo.insert(0, values[5])
@@ -226,13 +226,13 @@ def mostrar_TEG(window, search_entry, table):
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"Error al obtener los TEG: {str(e)}")
 
-def mostrar_tabla_libros(window, search_entry, table):
+def mostrar_tabla_libros(window, search_entry):
     try:
         data = obtener_libros()
 
         style = ttk.Style()
         style.theme_use("default")
-        style.configure("Treeview.Heading", font=("Arial Black", 12), background="#FFFFFF")
+        style.configure("Treeview.Heading", font=("Arial Black", 10), background="#FFFFFF")
         style.configure("Treeview.Row", font=("Arial", 12))
         style.configure("Treeview", background="#FFFFFF")
 
@@ -253,7 +253,6 @@ def mostrar_tabla_libros(window, search_entry, table):
         table.tag_configure("evenrow", background="#f5f5f5")
         table.tag_configure("oddrow", background="#fff")
         table.tag_configure("headings", background="#333", foreground="#fff")
-        table.place(x=390, y=377, width=758, height=376)
 
         def on_double_click(event):
             item = table.selection()[0]
